@@ -1,0 +1,127 @@
+<form [formGroup]="contactForm" (ngSubmit)="addFormData(contactForm.value)">
+  <div class="demo-tab-content">
+    <div>
+      <label for="citizenName">Как вас зовут?</label>
+      <div matTooltip='Волонтёрам важно знать, с кем они будут контактировать'
+           class="formwide-tooltip small-placeholder">
+        <mat-form-field>
+          <input matInput id="citizenName" placeholder="Имя и фамилия" formControlName="contactName"
+                 required (change)="isOppositeFormDisable(contactForm.value, 'isCitizenName')">
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <label for="citizenPhoto">Ваше фото <span class="small-placeholder">(используйте форматы jpeg/jpg)</span></label>
+      <div matTooltip='Загрузите свое фото, чтобы при встрече волонтерам было проще вас узнать'
+           class="formwide-tooltip go-flex">
+        <input type="file" id="citizenPhoto" #contactPhoto formControlName="contactPhoto"
+               placeholder="Фото не выбрано" class="marg-top-6" (change)="setContactPhoto($event)">
+        <mat-icon *ngIf="userEventContactInfo && userEventContactInfo.contactPhoto"
+                  aria-label="Example icon-button with a heart icon"
+                  (click)="removeContactPhoto()" class="marg-top-6">clear
+        </mat-icon>
+      </div>
+      <div id="toolTipContact"></div>
+    </div>
+    <br>
+
+
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div
+          matTooltip='Оставьте свои контактные данные, чтобы волонтеры могли связаться с вами. Например, +375-291234567'
+          class="formwide-tooltip">
+          <label for="citizenPhone">Как с вами связаться?</label>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+
+        <div class="go-flex-no-space">
+          <div matTooltip='Если с вами можно связаться по нескольким номерам, для надёжности лучше указать все.
+                         При этом первый номер будет считаться основным, а последующие – дополнительными. Формат номера: +375-291234567'
+               class="formwide-tooltip">
+            <mat-form-field>
+              <span matPrefix>+375 - &nbsp;</span>
+              <input matInput id="citizenPhone" #primeTel placeholder="Контактный номер" type="tel"
+                     formControlName="telNumberAdd0" minlength="9" maxlength="9"
+                     required>
+            </mat-form-field>
+          </div>
+          <button mat-icon-button [class.disabled]="contactArrays.tels.length>1">
+            <mat-icon aria-label="Example icon-button with a heart icon"
+                      [class.disabled]="contactArrays.tels.length>1"
+                      (click)="addTelField(contactForm.value)">add_circle_outline
+            </mat-icon>
+          </button>
+        </div>
+
+        <div *ngIf="contactArrays.tels[0] && contactArrays.tels[0].length === 9">
+          <div *ngFor="let tel of contactArrays.tels" class="go-flex-no-space">
+            <mat-form-field>
+              <span matPrefix>+375 - &nbsp;</span>
+              <input matInput id="tel{{contactArrays.tels.length}}" placeholder="Контактный номер" type="text"
+                     formControlName="telNumberAdd{{contactArrays.tels.length}}" minlength="9" maxlength="9">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="go-flex-no-space">
+          <div matTooltip='Сюда будут приходить уведомления и напоминания по акции'
+               class="formwide-tooltip">
+            <mat-form-field>
+              <input matInput id="citizenPost" placeholder="Электронная почта" type="email"
+                     formControlName="usersEmail" required>
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="go-flex-no-space">
+          <div matTooltip='Это может быть ваш личный сайт или блог, профиль ВКонтакте, Facebook или LinkedIn,
+                         где о вас можно найти больше информации и, при необходимости, связаться'
+               class="formwide-tooltip">
+            <mat-form-field>
+              <input matInput id="citizenWeb" placeholder="Сайт или соц.сеть" type="text"
+                     formControlName="siteAdd0">
+            </mat-form-field>
+          </div>
+          <button mat-icon-button [class.disabled]="contactArrays.sites.length>3">
+            <mat-icon aria-label="Example icon-button with a heart icon"
+                      [class.disabled]="contactArrays.sites.length>3"
+                      (click)="addSiteField(contactForm.value)">add_circle_outline
+            </mat-icon>
+          </button>
+        </div>
+
+        <div *ngIf="contactArrays.sites[0] && contactArrays.sites[0].length > 5">
+          <div *ngFor="let site of contactArrays.sites" class="go-flex-no-space">
+            <mat-form-field>
+              <input matInput id="site{{contactArrays.sites.length}}" placeholder="Сайт или соц.сеть" type="text"
+                     formControlName="siteAdd{{contactArrays.sites.length}}">
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+
+    <p>Что бы вы хотели добавить?</p>
+    <div matTooltip='Напишите чем занимаетесь, почему решили организовать акцию и т.д.'
+         class="formwide-tooltip">
+      <div>
+        <p>
+          <mat-form-field class="example-full-width">
+                        <textarea matInput rows=3 formControlName="aboutEvent"
+                                  placeholder="Напишите почему решили организовать акцию и т.д."></textarea>
+          </mat-form-field>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="go-flex">
+    <button mat-button matStepperPrevious>Назад</button>
+    <button mat-button matStepperNext type="submit" [disabled]="!contactForm.valid"
+            class="next-action">Далее
+    </button>
+  </div>
+</form>

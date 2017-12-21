@@ -1,0 +1,67 @@
+<mat-card>
+<h6 class="mat-subheading-1">Ниже вы можете увидеть, как будет выглядеть созданная вами страница.
+  Если нужно внести корректировки, нажмите кнопку «Редактировать». Если всё хорошо,
+  нажмите кнопку «Опубликовать», и страницу акции увидят все волонтёры, посещающие
+  subbotnik.by</h6>
+</mat-card>
+<br>
+<mat-card>
+  <mat-card-header>
+    <h4 class="mat-display-1 center">Предпросмотр акции</h4>
+  </mat-card-header>
+  <mat-card-content>
+    <h4 class="mat-subheading-1">Название мероприятия: <span>{{userEvent.eventName}}</span></h4>
+    <h4 class="mat-subheading-1">Место проведения мероприятия: <span>{{userEvent.addressOfEvent}}</span></h4>
+    <app-map [placeOfEvent]="userEvent.eventCoordinates"></app-map>
+    <br>
+    <h4 *ngIf="userEvent.exactDate" class="mat-subheading-1">Дата проведения мероприятия: <span>{{userEvent.exactDate | date:'fullDate'}}</span>
+    </h4>
+    <h4 *ngIf="userEvent.startTime" class="mat-subheading-1">Время начала
+      мероприятия: <span>{{userEvent.startTime}}</span></h4>
+    <h4 *ngIf="userEvent.finishTime" class="mat-subheading-1">Время окончания мероприятия: <span>{{userEvent.finishTime}}</span>
+    </h4>
+    <h4 *ngIf="userEvent.eventStartDate" class="mat-subheading-1">Дата начала проведения акции:
+      {{userEvent.eventStartDate | date:'fullDate'}}</h4>
+    <h4 *ngIf="userEvent.eventFinishDate" class="mat-subheading-1">Дата окончания
+      акции: {{userEvent.eventFinishDate | date:'fullDate'}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.contactName && !userEvent.personToContact">Организатор: {{userEvent.contactName}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.contactPhoto && !userEvent.personToContact">Фото организатора:
+      {{userEvent.contactPhoto}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.contactName && userEvent.personToContact">
+      Компания-организатор: {{userEvent.contactName}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.contactPhoto && userEvent.personToContact">Логотип компании: {{userEvent.contactPhoto}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.telNumberAdd0">Основной номер
+      телефона: +375 - {{userEvent.telNumberAdd0}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.telNumberAdd1">Дополнительный номер
+      телефона: +375 - {{userEvent.telNumberAdd1}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.telNumberAdd2">Дополнительный номер
+      телефона: +375 - {{userEvent.telNumberAdd2}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.usersEmail">Электронная почта: {{userEvent.usersEmail}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.siteAdd0">Сайт/соц.сеть: {{userEvent.siteAdd0}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.siteAdd1">Сайт/соц.сеть: {{userEvent.siteAdd1}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.siteAdd2">Сайт/соц.сеть: {{userEvent.siteAdd2}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.siteAdd3">Сайт/соц.сеть: {{userEvent.siteAdd3}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.siteAdd4">Сайт/соц.сеть: {{userEvent.siteAdd4}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.aboutEvent">О событии: {{userEvent.aboutEvent}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.personToContact">С кем
+      связываться:{{userEvent.personToContact}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.placePicture">Фото местности: {{userEvent.placePicture}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.meetingPlace">Место встречи: {{userEvent.meetingPlace}}</h4>
+    <br>
+    <app-map [placeOfMeeting]="userEvent.meetingCoordinates"></app-map>
+    <br>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.getToPlace">Как добраться: {{userEvent.getToPlace}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.whatToDo">Что будем делать: {{userEvent.whatToDo}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.equipment">Что взять с собой: {{userEvent.equipment}}</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.minPeople">Минимальное количество: {{userEvent. minPeople}}
+      чел.</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.maxPeople">Максимальное количество: {{userEvent.maxPeople}}
+      чел.</h4>
+    <h4 class="mat-subheading-1 " *ngIf="userEvent.smthElse">Дополнительная
+      информация: {{userEvent.smthElse}}</h4>
+  </mat-card-content>
+</mat-card>
+<div class="go-flex">
+  <button mat-button routerLink="/edit">Редактировать</button>
+  <button mat-button routerLink="/published" class="no-decor">Опубликовать</button>
+</div>

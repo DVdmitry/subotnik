@@ -1,0 +1,79 @@
+<form [formGroup]="basicInfoFormGroup" (ngSubmit)="addForm(basicInfoFormGroup.value)">
+  <p>Как называется ваша акция?*</p>
+  <div matTooltip='Например: Субботник в Осмоловке или Уборка левого берега р. Ислочь'
+       class="formwide-tooltip">
+    <mat-form-field>
+      <input matInput placeholder="Название акции" formControlName="eventName" autofocus>
+    </mat-form-field>
+  </div>
+
+  <p class="mat-body-1">Где будет проводиться акция?*</p>
+
+  <app-map (getEventLat)="getEventLat($event)"></app-map>
+
+  <br>
+  <div>
+    <label for="actionDate">Когда будет проводится акция?*</label>
+    <div matTooltip='Укажите дату*, время начала* и окончания акции (если уже знаете их)'
+         class="formwide-tooltip small-placeholder" [class.disabled]="showInterval">
+      <mat-form-field class="go-flex pos-relative">
+
+        <input matInput class='formwide-tooltip' id="actionDate" type="text" formControlName="exactDate"
+               [matDatepicker]="picker" placeholder="Дата проведения акции" [min]="minDate"
+               [max]="maxDate" (dateInput)="addExactDate($event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker disabled="false"></mat-datepicker>
+      </mat-form-field>
+
+      <div class="time-form go-flex" name="time-form">
+        <p class="padd-up-right">c</p>
+        <mat-form-field class="time-field">
+          <input matInput type="time" step="1800" min="06:00" max="23:00" formControlName="startTime"
+                 (change)="addStartTime($event)">
+        </mat-form-field>
+        <p class="padd-up-right">до</p>
+        <mat-form-field class="time-field">
+          <input matInput type="time" step="1800" min="07:00" max="23:30" formControlName="finishTime">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <mat-checkbox (change)="customInterval()"> Я еще не знаю точную дату и время проведения акции
+  </mat-checkbox>
+
+  <div *ngIf='showInterval'>
+    <br>
+    <div matTooltip='Дату и время акции в дальнейшем можно будет уточнить, отредактировав
+                                страницу акции. Все подписавшиеся на акцию волнтёры получат об этом
+                                уведомление, так что все будут в курсе.'
+         class="formwide-tooltip">
+      <label for="actionStartInterval">Укажите хотя бы примерный период,
+        в который планируете провести акцию*</label>
+      <div class="go-flex">
+        <mat-form-field class='pos-relative'>
+          <input matInput id="actionStartInterval" [matDatepicker]="pickerStartInterval" type="text"
+                 formControlName="eventStartDate" placeholder="c" [min]="minDate" [max]="maxDate"
+                 (dateInput)="minInterval($event)">
+          <mat-datepicker-toggle matSuffix [for]="pickerStartInterval"></mat-datepicker-toggle>
+          <mat-datepicker #pickerStartInterval></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class='pos-relative'>
+          <input matInput [matDatepicker]="pickerEndInterval" type="text"
+                 formControlName="eventFinishDate" placeholder="по" [min]="incrementedEventStartDate"
+                 (dateInput)="maxInterval($event)" [max]="maxDate">
+          <mat-datepicker-toggle matSuffix [for]="pickerEndInterval"></mat-datepicker-toggle>
+          <mat-datepicker #pickerEndInterval></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <div class="block-text-right">
+    <button mat-button matStepperNext type="submit"
+            [disabled]="!basicInfoFormGroup.valid || !userEventBasicInfo.addressLongitude || !dateValidation"
+            class="next-action">
+      Далее
+    </button>
+  </div>
+</form>

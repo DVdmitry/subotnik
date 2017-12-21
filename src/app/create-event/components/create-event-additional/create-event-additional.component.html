@@ -1,0 +1,126 @@
+<form [formGroup]="eventDetailFormGroup" (ngSubmit)="addFormDataDetails(eventDetailFormGroup.value)">
+  <ng-template matStepLabel>Подробности акции</ng-template>
+  <section>
+    <label for="placePicture" class="subheading-1">Фото места проведения акции
+      <span class="small-placeholder">(используйте форматы jpeg/jpg)</span></label>
+    <div matTooltip='Если у вас есть хорошее фото места проведения акции, загрузите его,
+                          пожалуйста, чтобы дополнительно вдохновить волонтёров. Минимальный
+                          размер: X на Y пикселей (Z мегабайт). Максимальный размер: K на L
+                          пикселей (M мегабайт).'
+         class="formwide-tooltip" id="toolTipPlacePict">
+      <div class="box-upload-picture block-text-center"></div>
+      <div class="go-flex">
+        <input type="file" #placePicture formControlName="placePicture" id="placePicture"
+               (change)="setPlacePicture($event)">
+        <mat-icon *ngIf="userAddInfo && userAddInfo.placePicture"
+                  aria-label="Example icon-button with a heart icon"
+                  (click)="removePlacePicture()">clear
+        </mat-icon>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div matTooltip='Местом сбора может быть остановка транспорта,
+                            авто- или ж/д вокзал, местная достопримечательность и т. д.'
+         class="formwide-tooltip">
+      <p class="mat-body-1">Где будет место сбора волонтеров?*</p>
+    </div>
+    <app-map (getMeetingLat)="getMeetingLat($event)"></app-map>
+  </section>
+  <br>
+
+
+  <section>
+    <label for="getToPlace">Как можно добраться до места сбора?</label>
+    <div matTooltip='Опишите наиболее подходящие виды транспорта (автобус, маршрутка и т. д.) и
+                            маршруты по ключевым направлениям движения. Это поможет волонтёрам решиться
+                             на участие и добраться на акцию вовремя.'
+         class="formwide-tooltip">
+      <p>
+        <mat-form-field class="example-full-width">
+              <textarea id="getToPlace" formControlName="getToPlace" matInput rows=3 placeholder="Опишите виды транспорта,
+              название остановки"></textarea>
+        </mat-form-field>
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <label for="whatToDo">Что конкретно нужно будет делать?</label>
+    <div matTooltip='Опишите конкретные действия участников и примерный процесс.
+                          Например: «Нужно будет находить мусор, оставленный
+                          на берегу реки, собирать его в пакеты и грузить их на транспорт»."'
+         class="formwide-tooltip">
+      <p>
+        <mat-form-field class="example-full-width">
+                    <textarea id="whatToDo" matInput rows=3 formControlName="whatToDo"
+                              placeholder="Например: «Нужно будет собирать мусор»"></textarea>
+        </mat-form-field>
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <label for="equipment">Что нужно взять с собой? Что выдадут на месте?</label>
+    <div matTooltip='Например: «Участникам будут выданы пакеты для мусора и перчатки.
+               С собой нужно взять еду и воду для перекуса»'
+         class="formwide-tooltip">
+      <p>
+        <mat-form-field class="example-full-width">
+                    <textarea id="equipment" matInput rows=3 formControlName="equipment"
+                              placeholder="Например: «Будут выданы пакеты для мусора»"></textarea>
+        </mat-form-field>
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <p>Минимальное количество участников: <span *ngIf="userAddInfo && userAddInfo.minPeople"
+                                                class="circle">{{userAddInfo.minPeople}}</span></p>
+    <div class="example-section">
+      <mat-slider
+        class="example-margin go-block mat-slider-horizontal blue"
+        [max]="sliderConfig.max"
+        [min]="sliderConfig.min"
+        [step]="sliderConfig.step"
+        [value]="sliderConfig.minValue"
+        [thumb-label]="sliderConfig.minThumbLabel" (change)="getMinPeople($event)" [class.red]='sliderConfig.minThumbLabel == false'>
+      </mat-slider>
+    </div>
+  </section>
+
+  <section>
+    <p>Максимальное количество участников: <span *ngIf="userAddInfo && userAddInfo.maxPeople"
+                                                 class="circle">{{userAddInfo.maxPeople}}</span></p>
+    <div class="example-section">
+      <mat-slider
+        class="example-margin go-block mat-slider-horizontal blue"
+        [max]="sliderConfig.max"
+        [min]="sliderConfig.min"
+        [step]="sliderConfig.step"
+        [value]="sliderConfig.maxValue"
+        [thumb-label]="sliderConfig.maxThumbLabel" (change)="getMaxPeople($event)" [class.red]='sliderConfig.maxThumbLabel == false'>
+      </mat-slider>
+    </div>
+  </section>
+
+  <section>
+    <label for="smthElse">Дополнительная информация</label>
+    <div matTooltip='Если есть еще что-то важное, что вам не удалось указать в
+                          предыдущих полях, напишите это здесь'
+         class="formwide-tooltip">
+      <p>
+        <mat-form-field class="example-full-width">
+                    <textarea id="smthElse" matInput rows=3 formControlName="smthElse"
+                              placeholder="Ещё что-то важное, что не указали"></textarea>
+        </mat-form-field>
+      </p>
+    </div>
+  </section>
+
+  <div class="go-flex">
+    <button mat-button matStepperPrevious (click)="goPrevious($event)">Назад</button>
+    <button mat-button type="submit" [disabled]="!meetingLatitude">Предпросмотр</button>
+  </div>
+</form>

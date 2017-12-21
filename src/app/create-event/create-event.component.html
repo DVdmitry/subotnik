@@ -1,0 +1,36 @@
+  <mat-card>
+    <mat-card-content>
+      <p class="mat-body-1">Чтобы создать страницу акции на subbotnik.by, нужно указать информацию, которая
+        будет интересна и важна для потенциальных волонтёров: что это за акция, когда и где она пройдёт,
+        кто её организует, что нужно для участия в ней. Предлагаем внести все эти данные в 3 простых шага.
+        Обязательные поля отмечены звёздочкой (*).</p>
+    </mat-card-content>
+  </mat-card>
+  <br>
+  <mat-card>
+    <mat-card-content>
+      <mat-horizontal-stepper [linear]="isLinear">
+        <mat-step [stepControl]="basicInfoFormGroup">
+          <form [formGroup] = "basicInfoFormGroup">
+          <ng-template matStepLabel>Основная информация</ng-template>
+          <app-create-event-basic (firstStepData)="getFormData($event)" [basicInfoFormGroup]="basicInfoFormGroup">
+           </app-create-event-basic>
+          </form>
+        </mat-step>
+
+
+        <mat-step [stepControl]="contactFormGroup">
+          <form [formGroup]="contactFormGroup">
+        <ng-template matStepLabel>Информация об организаторах</ng-template>
+          <app-create-event-contact (contactStepData)="getFormData($event)" [contactForm]="contactFormGroup"></app-create-event-contact>
+          </form>
+        </mat-step>
+
+
+        <mat-step>
+        <ng-template matStepLabel>Подробности акции</ng-template>
+          <app-create-event-additional (additionalStepData)="getFormData($event)"></app-create-event-additional>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </mat-card-content>
+  </mat-card>

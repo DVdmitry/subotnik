@@ -1,0 +1,332 @@
+<mat-card>
+  <mat-card-header>
+    <h6 class="mat-subheading-2">Ниже вы можете отредактировать уже введённую информацию об акции. Возможно,
+      помимо исправления вам захочется добавить ещё какие-то полезные для волонтёров
+      сведения. Обязательные поля по прежнему отмечены звёздочкой(*).</h6>
+  </mat-card-header>
+</mat-card>
+
+<form [formGroup]="editForm" (ngSubmit)="addForm(editForm.value)">
+<mat-card>
+  <mat-card-content>
+    <mat-card>
+      <mat-card-header>
+        <h3 class="mat-title center bold">Основная информация</h3>
+      </mat-card-header>
+      <mat-card-content>
+        <h6 class="mat-subheading-1 ">
+          Название мероприятия:
+          <mat-form-field>
+            <input matInput value="{{userEvent.eventName}}" formControlName="eventName" required>
+          </mat-form-field>
+        </h6>
+
+
+        <h6 class="mat-subheading-1">Мероприятие будет проходить:
+          <div class="d-inline-block">{{userEvent.addressOfEvent}}</div>
+        </h6>
+
+        <mat-checkbox class="example-margin mat-body-1" (click)="changingPlace('changeEventPlace')"> Изменить место проведения
+          мероприятия
+        </mat-checkbox>
+        <br>
+        <app-map *ngIf="!changeEventPlace" [placeOfEvent]="userEvent.eventCoordinates"></app-map>
+        <app-map *ngIf="changeEventPlace" (getEventLat)="getLat($event, 'addressOfEvent',
+        'addressLatitude', 'addressLongitude', 'eventCoordinates')"></app-map>
+        <br>
+
+
+        <div *ngIf="userEvent.exactDate" class="go-flex-no-space">
+          <div class="go-flex-no-space">
+            <h6 class="mat-subheading-1 ">Дата проведения:
+              <mat-form-field class="go-flex pos-relative">
+                <input matInput id="actionDatePreview" [value]="exactDate.value" [matDatepicker]="picker" [min]="minDate"
+                       [max]="maxDate" name="exactDate" disabled (dateChange)="changeDate($event, 'exactDate')">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+              </mat-form-field>
+            </h6>
+          </div>
+
+          <div class="go-flex-no-space">
+            <h4 class="padd-left-right">c: </h4>
+            <mat-form-field class="time-field">
+              <input matInput type="time" value="{{userEvent.startTime}}" step="1800" min="06:00" max="23:00" formControlName="startTime">
+            </mat-form-field>
+            <h4 class="padd-left-right">до: </h4>
+            <mat-form-field class="time-field">
+              <input matInput type="time" value="{{userEvent.finishTime}}" step="1800" min="07:00" max="23:30" formControlName="finishTime">
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="go-flex-no-space">
+          <div *ngIf="userEvent.eventStartDate" class="go-flex-no-space">
+            <h6 class="mat-body-2">Дата начала проведения акции:
+              <mat-form-field class="go-flex pos-relative limited">
+                <input matInput id="changeStartEventDatePreview" [value]="startDate.value"
+                       [matDatepicker]="picker" [min]="minDate" [max]="maxDate"
+                       (dateChange)="changeDate($event, 'eventStartDate')"
+                       (dateChange)="finishDateChange($event, userEvent.eventFinishDate)">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+              </mat-form-field>
+            </h6>
+          </div>
+          <div *ngIf="userEvent.eventFinishDate" class="go-flex-no-space">
+            <h6 class="mat-body-2">&nbsp; Дата окончания проведения акции:
+              <mat-form-field class="go-flex pos-relative limited">
+                <input matInput id="changeFinishEventDatePreview" [value]="finishDate.value"
+                       [matDatepicker]="picker" [min]="finalDate" [max]="maxDate" (dateChange)="changeDate($event, 'eventFinishDate')">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+              </mat-form-field>
+            </h6>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <br>
+
+
+    <mat-card>
+      <mat-card-header>
+        <h3 class="mat-title center bold">Информация об организаторах</h3>
+      </mat-card-header>
+      <mat-card-content >
+        <h6 class="mat-subheading-1 ">Организатор:
+          <mat-form-field>
+            <input matInput formControlName="contactName" required>
+          </mat-form-field>
+        </h6>
+
+        <!--checking foto-->
+        <section *ngIf="flags.isContactPhoto">
+          <div class="go-flex-no-space">
+            <div [ngSwitch] = "isCompany">
+            <h6 *ngSwitchDefault class="mat-subheading-1">Фото организатора: </h6>
+            <h6 *ngSwitchCase="true" class="mat-subheading-1">Логотип компании: </h6>
+            </div>
+
+            <mat-form-field class="margin-top-minus-1">
+              <input matInput [value]="userEvent.contactPhoto">
+            </mat-form-field>
+            <mat-icon aria-label="Example icon-button with a heart icon"
+                      (click)="correctContactPhoto()" class="pointer">clear
+            </mat-icon>
+          </div>
+
+            <div *ngIf="!userEvent.contactPhoto" class="d-inline-block margin-top-minus-1">
+              <div matTooltip='Загрузите свое фото, чтобы при встрече волонтерам было проще вас узнать'
+                   class="formwide-tooltip go-flex">
+
+                <input type="file" id="citizenPhotoChange" #contactPhoto placeholder="Фото не выбрано"
+                       class="marg-top-6" (change)="setContactPhoto($event)">
+                <mat-icon *ngIf="userEvent && userEvent.contactPhoto"
+                          aria-label="Example icon-button with a heart icon">clear
+                </mat-icon>
+              </div>
+              <div id="toolTipContact"></div>
+            </div>
+          <br>
+          <div class="box-upload-picture block-text-center"></div>
+        </section>
+
+
+        <div *ngFor="let tel of contactArrays.tels; let i = index;">
+          <div [ngSwitch]="i" class="go-flex-no-space padd-up" >
+          <h6 *ngSwitchCase="0" class="mat-subheading-1">Основной номер : </h6>
+            <h6 *ngSwitchDefault class="mat-subheading-1">Дополнительный номер : </h6>
+            <div class="margin-top-minus-1" matTooltip='Если с вами можно связаться по нескольким номерам, для надёжности лучше указать все.
+                         При этом первый номер будет считаться основным, а последующие – дополнительными. Формат номера: +375-291234567'
+                 class="formwide-tooltip d-inline-block">
+              <mat-form-field class="margin-top-minus-18">
+                <span matPrefix>&nbsp; +375 - &nbsp;</span>
+                <input matInput id="contactPhone" placeholder="Контактный номер" type="tel"
+                       [value]="tel" formControlName="telNumberAdd{{i}}"
+                       minlength="9" maxlength="9">
+                </mat-form-field>
+            </div>
+
+         </div>
+        </div>
+
+        <h6 class="mat-subheading-1">Электронная почта:
+          <mat-form-field>
+            <input matInput formControlName="usersEmail" required>
+          </mat-form-field>
+        </h6>
+
+        <section *ngIf="contactArrays.sites.length > 0">
+          <h6 *ngFor="let site of contactArrays.sites; let i = index" class="mat-subheading-1 ">Сайт / соц.сеть:
+            <div class="d-inline-block">
+              <mat-form-field>
+                <input matInput [value]="site" formControlName="siteAdd{{i}}"
+                       (input)='getCrossIcon($event)'>
+              </mat-form-field>
+            </div>
+            <mat-icon aria-label="Example icon-button with a heart icon"
+                      (click)="removeInput($event)" class="pointer hide go-block">clear
+            </mat-icon>
+          </h6>
+        </section>
+        </mat-card-content>
+        </mat-card>
+        <h6 *ngIf="userEvent.personToContact" class="mat-subheading-1 ">Контактное лицо:
+          <div class="go-flex-no-space">
+            <div matTooltip='Укажите имя и фамилию того, с кем будут связываться волонтёры. Чтобы к вашей акции было больше доверия
+                                             лучшеуказывать свои настоящие имя и фамилию'
+                 class="formwide-tooltip">
+              <mat-form-field>
+                <input matInput placeholder="Контактное лицо" type="text"
+                       formControlName="personToContact">
+              </mat-form-field>
+            </div>
+          </div>
+        </h6>
+        <div *ngIf="flags.isAboutEvent">
+          <h6 class="mat-subheading-1 ">Что бы вы хотели добавить?</h6>
+          <div matTooltip='Напишите чем занимается ваша организация, почему решили организовать акцию и т.д.'
+               class="formwide-tooltip">
+            <textarea matInput rows='4' cols="50" formControlName="aboutEvent"></textarea>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+
+
+
+    <br>
+    <mat-card>
+      <mat-card-header>
+        <h3 class="mat-title center bold">Подробности акции</h3>
+      </mat-card-header>
+      <mat-card-content>
+
+
+        <section *ngIf="flags.isPlacePicture">
+          <h6 class="mat-subheading-1">Фото места проведения акции: </h6>
+          <div matTooltip='Если у вас есть хорошее фото места проведения акции, загрузите его,
+                          пожалуйста, чтобы дополнительно вдохновить волонтёров. Минимальный
+                          размер: X на Y пикселей (Z мегабайт). Максимальный размер: K на L
+                          пикселей (M мегабайт).'
+               class="formwide-tooltip">
+            <div class="go-flex">
+              <mat-form-field class="margin-top-minus-1">
+                <input matInput [value]="userEvent.placePicture">
+              </mat-form-field>
+              <mat-icon *ngIf="userEvent.placePicture" aria-label="Example icon-button with a heart icon"
+                        (click)="correctPlacePicture()" class="pointer go-block marg-top-3">clear
+              </mat-icon>
+              <div *ngIf="!userEvent.placePicture" class="d-inline-block margin-top-minus-1">
+                <input type="file" id="placePictureChange" #placePicture placeholder="Логотип не выбран"
+                       class="marg-top-6" (change)="setPlacePicture($event)">
+                <mat-icon *ngIf="userEvent && userEvent.placePicture"
+                          aria-label="Example icon-button with a heart icon"
+                          (click)="removePlacePicture()">clear
+                </mat-icon>
+                <div id="toolTipPlacePict"></div>
+              </div>
+            </div>
+          </div>
+          <div class="box-upload-picture block-text-center"></div>
+        </section>
+
+
+        <h6 class="mat-subheading-1 ">Место сбора волонтеров:
+          {{userEvent.meetingPlace}}</h6>
+
+        <mat-checkbox class="example-margin mat-body-1" (click)="changingPlace('changeMeetingPlace')"> Изменить место встречи
+        </mat-checkbox>
+        <br>
+        <app-map *ngIf="!changeMeetingPlace" [placeOfMeeting]="userEvent.meetingCoordinates"></app-map>
+        <app-map *ngIf="changeMeetingPlace" (getMeetingLat)="getLat($event, 'meetingPlace',
+        'meetingPlaceLatitude', 'meetingPlaceLongitude', 'meetingCoordinates')"></app-map>
+        <br>
+
+        <div *ngIf="flags.isGetToPlace">
+          <h6 class="mat-subheading-1 ">Как можно добраться до места сбора? </h6>
+          <div matTooltip='Опишите наиболее подходящие виды транспорта (автобус, маршрутка и т. д.) и
+                            маршруты по ключевым направлениям движения. Это поможет волонтёрам решиться
+                             на участие и добраться на акцию вовремя.'
+               class="formwide-tooltip">
+            <textarea matInput rows='4' cols="50" formControlName="getToPlace"></textarea>
+          </div>
+        </div>
+        <br>
+
+        <div *ngIf="flags.isWhatToDo">
+          <h6 class="mat-subheading-1">Что конкретно нужно будет делать?</h6>
+          <div matTooltip='Опишите конкретные действия участников и примерный процесс.
+                          Например: «Нужно будет находить мусор, оставленный
+                          на берегу реки, собирать его в пакеты и грузить их на транспорт»."'
+               class="formwide-tooltip">
+            <textarea matInput rows='4' cols="50" formControlName="whatToDo"></textarea>
+          </div>
+        </div>
+
+        <br>
+
+        <div *ngIf="flags.isEquipment">
+          <h6 class="mat-subheading-1 ">Что нужно взять с собой? Что выдадут на месте?</h6>
+          <div matTooltip='Например: «Участникам будут выданы пакеты для мусора и перчатки.
+               С собой нужно взять еду и воду для перекуса»'
+               class="formwide-tooltip">
+            <textarea matInput rows='4' cols="50" formControlName="equipment"></textarea>
+          </div>
+        </div>
+
+        <br>
+
+
+        <div *ngIf="userEvent.minPeople">
+          <p>Минимальное количество участников: <span *ngIf="userEvent && userEvent.minPeople"
+                                                      class="circle">{{userEvent.minPeople}}</span></p>
+          <div class="example-section">
+            <mat-slider
+              class="example-margin go-block mat-slider-horizontal blue"
+              [max]="sliderConfig.max"
+              [min]="sliderConfig.min"
+              [step]="sliderConfig.step"
+              [value]="sliderConfig.minValue"
+              [thumb-label]="sliderConfig.minThumbLabel" (change)="getMinPeople($event)" [class.red]='sliderConfig.minThumbLabel == false'>
+            </mat-slider>
+          </div>
+        </div>
+
+
+        <div *ngIf="userEvent.maxPeople">
+          <p>Максимальное количество участников: <span *ngIf="userEvent && userEvent.maxPeople"
+                                                       class="circle">{{userEvent.maxPeople}}</span></p>
+          <div class="example-section">
+            <mat-slider
+              class="example-margin go-block mat-slider-horizontal blue"
+              [max]="sliderConfig.max"
+              [min]="sliderConfig.min"
+              [step]="sliderConfig.step"
+              [value]="sliderConfig.maxValue"
+              [thumb-label]="sliderConfig.maxThumbLabel" (change)="getMaxPeople($event)" [class.red]='sliderConfig.maxThumbLabel == false'>
+            </mat-slider>
+          </div>
+        </div>
+
+        <br>
+
+        <div *ngIf="flags.isSmthElse">
+          <h6 class="mat-subheading-1 ">Дополнительная информация</h6>
+          <div matTooltip='Если есть еще что-то важное, что вам не удалось указать в
+                          предыдущих полях, напишите это здесь'
+               class="formwide-tooltip">
+            <textarea matInput rows='4' cols="50" formControlName="smthElse"></textarea>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+<div class="block-text-right">
+  <button mat-button type="submit" [disabled]="!editForm.valid">
+    Предпросмотр
+  </button>
+</div>
+</form>

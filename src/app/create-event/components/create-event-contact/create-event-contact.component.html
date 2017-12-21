@@ -1,0 +1,12 @@
+<mat-tab-group class="demo-tab-group">
+  <mat-tab [disabled]="isCompanyName" label="Я физическое лицо">
+    <app-create-event-contact-citizen (disableForm)=whichTab($event)
+                                      (contactStepData)="getFormData($event)"
+                                      [contactForm]="contactForm"></app-create-event-contact-citizen>
+  </mat-tab>
+
+  <mat-tab [disabled]="isCitizenName" label="Я представитель организации">
+    <app-create-event-contact-company (disableForm)=whichTab($event)
+                                      (contactStepData)="getFormData($event)"></app-create-event-contact-company>
+  </mat-tab>
+</mat-tab-group>

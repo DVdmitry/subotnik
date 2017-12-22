@@ -14,7 +14,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'create-event',
+    path: 'create-event-page',
     component: CreateEventComponent,
    // loadChildren: 'app/create-event/create-event.module#CreateEventModule'
   }

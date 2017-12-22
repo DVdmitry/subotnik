@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./main.component.styl']
 })
 export class MainComponent implements OnInit {
-  btnTitle = 'Создать акцию';
+  btnTitle = 'Добавить акцию';
   constructor() { }
 
   ngOnInit() {

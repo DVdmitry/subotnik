@@ -61,7 +61,6 @@ export class CreateEventService {
         obj[prop] = config[prop];
       }
     }
-    console.log(obj);
   }
   getMinPeople(data, sliderConfig, obj): void {
     if (!obj.maxPeople) {

@@ -47,9 +47,9 @@
                      required>
             </mat-form-field>
           </div>
-          <button mat-icon-button [class.disabled]="contactArrays.tels.length>1">
+          <button mat-icon-button [class.disabled]="contactArrays.tels.length > 1">
             <mat-icon aria-label="Example icon-button with a heart icon"
-                      [class.disabled]="contactArrays.tels.length>1"
+                      [class.disabled]="contactArrays.tels.length > 1"
                       (click)="addTelField(contactForm.value)">add_circle_outline
             </mat-icon>
           </button>
@@ -85,9 +85,9 @@
                      formControlName="siteAdd0">
             </mat-form-field>
           </div>
-          <button mat-icon-button [class.disabled]="contactArrays.sites.length>3">
+          <button mat-icon-button [class.disabled]="contactArrays.sites.length > 3">
             <mat-icon aria-label="Example icon-button with a heart icon"
-                      [class.disabled]="contactArrays.sites.length>3"
+                      [class.disabled]="contactArrays.sites.length > 3"
                       (click)="addSiteField(contactForm.value)">add_circle_outline
             </mat-icon>
           </button>

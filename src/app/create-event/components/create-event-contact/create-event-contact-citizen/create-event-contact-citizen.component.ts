@@ -19,15 +19,17 @@ export class CreateEventContactCitizenComponent implements OnInit {
   userEventContactInfo = new UserEventInfo();
   // flags
   isContactPhoto = false;
-  showIcon = false;
-  showAddIcon = false;
 
   constructor(protected _fB: FormBuilder, protected service: CreateEventService) { }
 
   ngOnInit() {
     this.service.currentContactsArrays.subscribe(contacts => this.contactArrays = contacts);
   }
-  addFormData(data): void {
+  addFormData(data, personToContact): void {
+    if (personToContact) {
+      console.log(personToContact);
+      this.userEventContactInfo.personToContact = personToContact;
+    }
     this.service.addForm(data, this.userEventContactInfo);
     this.contactStepData.emit({variable: 'isContactFormValid', value: this.userEventContactInfo});
     this.service.changeContactArrays(this.contactArrays);
@@ -45,20 +47,6 @@ export class CreateEventContactCitizenComponent implements OnInit {
     this.userEventContactInfo.contactPhoto = null;
   }
 
-  showTelIcon(data) {
-    if (data.target.value.length === 9 && this.contactArrays.tels.length < 3) {
-      this.showIcon = true;
-    }
-  }
-
-  showAddTelIcon(data, index) {
-    if (data.target.value.length === 9 && this.contactArrays.tels.length < 3) {
-      this.showAddIcon = true;
-    }
-  }
-  removeTelField(data, index) {
-    this.contactArrays.tels.splice(index, 1);
-  }
   addSiteField(data): void {
     if (this.contactArrays.sites.length < 5) {
       this.contactArrays.sites = [];

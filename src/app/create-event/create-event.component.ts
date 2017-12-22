@@ -19,16 +19,13 @@ export class CreateEventComponent implements OnInit {
    }
 
   ngOnInit() {
-      this.service.currentEvent.subscribe(event => this.eventInfo = event);
+    this.service.currentEvent.subscribe(event => this.eventInfo = event);
     this.basicInfoFormGroup = this._fB.group(this.service.getBasicConfig().basicInfoConfig);
     this.contactFormGroup = this._fB.group(this.service.getContactConfig().contactInfoConfig);
-
-
   }
   getFormData(data) {
-    console.log(data);
     this.eventInfo = Object.assign(this.eventInfo, data.value);
-    this[data.variable] = true;
+    // this[data.variable] = true;
     if (data.eventCoordinates) {
       this.eventInfo.eventCoordinates = data.value.eventCoordinates;
     }

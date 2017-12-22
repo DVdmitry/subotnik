@@ -48,7 +48,7 @@
                class="formwide-tooltip">
             <mat-form-field>
               <span matPrefix>+375 - &nbsp;</span>
-              <input matInput id="citizenPhone" #primeTel placeholder="Контактный номер" type="tel"
+              <input matInput id="companyPhone" #primeTel placeholder="Контактный номер" type="tel"
                      formControlName="telNumberAdd0" minlength="9" maxlength="9"
                      required>
             </mat-form-field>
@@ -70,50 +70,6 @@
             </mat-form-field>
           </div>
         </div>
-
-
-        <!--<div class="go-flex-no-space">-->
-          <!--<div matTooltip='Если с вами можно связаться по нескольким номерам, для надёжности лучше указать все.-->
-                         <!--При этом первый номер будет считаться основным, а последующие – дополнительными. Формат номера: +375-291234567'-->
-               <!--class="formwide-tooltip">-->
-            <!--<mat-form-field>-->
-              <!--<span matPrefix>+375 - &nbsp;</span>-->
-              <!--<input matInput id="companyPhone" #primeTel placeholder="Контактный номер"-->
-                     <!--type="tel"-->
-                     <!--formControlName="telNumberAdd0" minlength="9" maxlength="9"-->
-                     <!--(input)="showTelIcon($event)" required>-->
-            <!--</mat-form-field>-->
-          <!--</div>-->
-          <!--<button mat-icon-button *ngIf="showIcon" [class.vanish]="contactArrays.tels.length>1">-->
-            <!--<mat-icon aria-label="Example icon-button with a heart icon"-->
-                      <!--(click)="addTelField(primeTel.value)"-->
-                      <!--[class.vanish]="contactArrays.tels.length>0 && contactArrays.tels[0].length > 1">add_circle_outline-->
-            <!--</mat-icon>-->
-          <!--</button>-->
-        <!--</div>-->
-
-        <!--<div *ngIf="contactArrays.tels[0] && contactArrays.tels[0].length > 1">-->
-          <!--<div *ngFor="let tel of contactArrays.tels; let i = index" class="go-flex-no-space">-->
-            <!--<mat-form-field>-->
-              <!--<span matPrefix>+375 - &nbsp;</span>-->
-              <!--<input matInput minlength="9" maxlength="9" (input)="showAddTelIcon($event, i)"-->
-                     <!--id="tel{{contactArrays.tels.length}}" placeholder="Контактный номер"-->
-                     <!--type="tel">-->
-            <!--</mat-form-field>-->
-            <!--<button mat-icon-button>-->
-              <!--<mat-icon aria-label="Example icon-button with a heart icon"-->
-                        <!--(click)="removeTelField($event, i)">remove_circle_outline-->
-              <!--</mat-icon>-->
-            <!--</button>-->
-            <!--<button mat-icon-button *ngIf="showAddIcon">-->
-              <!--<mat-icon aria-label="Example icon-button with a heart icon"-->
-                        <!--(click)="addTelField($event)"-->
-                        <!--[class.vanish]="contactArrays.tels.length > 1">add_circle_outline-->
-              <!--</mat-icon>-->
-            <!--</button>-->
-          <!--</div>-->
-        <!--</div>-->
-
 
         <div class="go-flex-no-space">
           <div matTooltip='Сюда будут приходить уведомления и напоминания по акции'

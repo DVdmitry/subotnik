@@ -1,4 +1,4 @@
 export class ContactArray {
-  tels: number[] = [];
-  sites: string[] = [];
+  tels: any[] = [];
+  sites: any[] = [];
 }

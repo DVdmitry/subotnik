@@ -1,4 +1,7 @@
 <form [formGroup]="contactForm" (ngSubmit)="addFormData(contactForm.value)">
+  <div class="form-img-container">
+    <img class = "form-img" src="../../../../../assets/step2.PNG">
+  </div>
   <div class="demo-tab-content">
     <div>
       <label for="citizenName">Как вас зовут?</label>
@@ -26,7 +29,7 @@
     <br>
 
 
-    <mat-card class="example-card">
+    <mat-card class="example-card example-card-contact">
       <mat-card-header>
         <div
           matTooltip='Оставьте свои контактные данные, чтобы волонтеры могли связаться с вами. Например, +375-291234567'

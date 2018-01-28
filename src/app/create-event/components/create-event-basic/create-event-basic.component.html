@@ -1,4 +1,7 @@
 <form [formGroup]="basicInfoFormGroup" (ngSubmit)="addForm(basicInfoFormGroup.value)">
+  <div class="form-img-container">
+    <img class = "form-img" src="../../../../assets/step1.PNG">
+  </div>
   <p>Как называется ваша акция?*</p>
   <div matTooltip='Например: Субботник в Осмоловке или Уборка левого берега р. Ислочь'
        class="formwide-tooltip">
@@ -77,3 +80,4 @@
     </button>
   </div>
 </form>
+

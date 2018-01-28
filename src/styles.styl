@@ -82,6 +82,8 @@
   border: dotted #80878C;
   height: 150px;
   max-width: 300px;
+  background-image: url("./assets/step3Placeholder.svg");
+  background-size: cover;
 }
 
 .blue {
@@ -217,7 +219,7 @@ div .mat-slider-horizontal {
 }
 
 .big-box {
-  height: 300px;
+  height: 500px;
   border: solid #e8e8e8;
 }
 
@@ -240,3 +242,46 @@ div .mat-slider-horizontal {
 .margin-top-minus-18 {
   margin-top: -18px;
 }
+
+form {
+  position: relative;
+}
+
+.form-img-container {
+  position: absolute;
+  right: 15%;
+  width: 300px;
+}
+
+.form-img {
+  padding-top: 20px;
+  width: 300px;
+  display: block;
+}
+
+@media screen and (max-width: 730px) {
+  .form-img-container {
+    right: 2%;
+    max-width: 200px;
+  }
+  .form-img {
+    display: block;
+    width: 200px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .form-img-container {
+    display: none;
+  }
+}
+
+.example-card-contact {
+  max-width: 40%;
+}
+
+  .photo-published {
+    background-image: url("./assets/step4Publication.svg");
+    background-size: cover;
+
+  }

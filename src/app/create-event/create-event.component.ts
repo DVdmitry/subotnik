@@ -10,7 +10,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
   styleUrls: ['./create-event.component.styl']
 })
 export class CreateEventComponent implements OnInit {
-  isLinear = true;
+  isLinear = false;
   eventInfo: UserEventInfo;
   basicInfoFormGroup: FormGroup;
   contactFormGroup: FormGroup;
